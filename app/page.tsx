@@ -7,7 +7,6 @@ export default function Home() {
         "Built a conversational onboarding flow to replace a static multi-page questionnaire, improving speed and data quality.",
       links: [
         { label: "Case Study", href: "/projects#homehudl" },
-        // { label: "Demo", href: "https://your-demo-link.com" },
       ],
     },
     {
@@ -69,7 +68,7 @@ export default function Home() {
               View Projects
             </a>
             <a
-              href="/resume"
+              href="/resume/millor-lei-resume.pdf"
               className="rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-medium text-zinc-900 hover:bg-zinc-50"
             >
               Resume
