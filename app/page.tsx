@@ -65,10 +65,10 @@ export default function Home() {
               href="/projects"
               className="rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-zinc-800"
             >
-              View Projects
+              <a href="/projects">View Projects</a>
             </a>
             <a
-              href="/resume/HL-resume.pdf"
+              href="/resume/HL_Resume.pdf"
               className="rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-medium text-zinc-900 hover:bg-zinc-50"
             >
               Resume
