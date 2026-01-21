@@ -140,8 +140,9 @@ export default function Home() {
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             {projects.map((p) => (
-              <div
+              <a
                 key={p.title}
+                href={p.links[0].href}
                 className="rounded-2xl border border-zinc-200 p-6 shadow-sm hover:shadow-md transition-shadow"
               >
                 <p className="text-sm text-zinc-600">{p.subtitle}</p>
@@ -153,14 +154,13 @@ export default function Home() {
                   {p.links.map((l) => (
                     <a
                       key={l.label}
-                      href={l.href}
                       className="text-sm font-medium text-zinc-900 hover:underline"
                     >
                       {l.label} →
                     </a>
                   ))}
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </section>

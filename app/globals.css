@@ -29,11 +29,18 @@ body {
   cursor: url("/img/cursor-default.png") 2 2, default;
 }
 
-body:active,
+a:hover,
+button:hover,
+[role="button"]:hover,
+.cursor-click:hover {
+  cursor: url("/img/cursor-click.png") 2 2, pointer;
+}
+
 a:active,
 button:active,
-[role="button"]:active {
-  cursor: url("/img/cursor-click.png") 2 2, default;
+[role="button"]:active,
+.cursor-click:active {
+  cursor: url("/img/cursor-click.png") 2 2, pointer;
 }
 
 
