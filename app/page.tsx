@@ -68,7 +68,7 @@ export default function Home() {
               View Projects
             </a>
             <a
-              href="/resume/millor-lei-resume.pdf"
+              href="/resume/HL-resume.pdf"
               className="rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-medium text-zinc-900 hover:bg-zinc-50"
             >
               Resume
