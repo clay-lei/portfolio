@@ -80,7 +80,7 @@ export default function Home() {
               Email
             </a>
             <a
-              href="https://github.com/yourusername"
+              href="https://github.com/clay-lei"
               target="_blank"
               rel="noreferrer"
               className="rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-medium text-zinc-900 hover:bg-zinc-50"
