@@ -24,3 +24,16 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+body {
+  cursor: url("/img/cursor-default.png") 2 2, default;
+}
+
+body:active,
+a:active,
+button:active,
+[role="button"]:active {
+  cursor: url("/img/cursor-click.png") 2 2, default;
+}
+
+

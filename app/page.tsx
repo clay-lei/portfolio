@@ -63,10 +63,11 @@ export default function Home() {
           <div className="flex flex-wrap gap-3">
             <a
               href="/projects"
-              className="rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-zinc-800"
+              className="cursor-pointer rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-zinc-800"
             >
-              <a href="/projects">View Projects</a>
+              View Projects
             </a>
+
             <a
               href="/resume/HL_Resume.pdf"
               className="rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-medium text-zinc-900 hover:bg-zinc-50"
