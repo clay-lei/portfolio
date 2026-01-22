@@ -182,7 +182,7 @@ export default function Home() {
 
         {/* Footer */}
         <footer className="mt-16 border-t border-zinc-200 pt-8 text-sm text-zinc-600">
-          <p>© {new Date().getFullYear()} Millor Lei. Built with Next.js.</p>
+          <p>© {new Date().getFullYear()} Millor Lei. </p>
         </footer>
       </div>
     </main>
