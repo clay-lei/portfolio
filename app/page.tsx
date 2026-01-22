@@ -45,7 +45,7 @@ export default function Home() {
         <header className="space-y-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200 px-4 py-2 text-sm text-zinc-700">
             <span className="h-2 w-2 rounded-full bg-emerald-500" />
-            Available for internships · Seattle / Remote
+            Available for income · Seattle / Remote
           </div>
 
           <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
