@@ -33,9 +33,44 @@ body:active {
   cursor: url("/img/cursor-click.png") 2 2, default;
 }
 
+/* ---- Custom Cursor (final) ---- */
+:root {
+  --cursor-default: url("/img/cursor-default.png");
+  --cursor-click: url("/img/cursor-click.png");
+}
+
+/* 默认全站光标 */
+html,
+body {
+  cursor: var(--cursor-default) 2 2, default !important;
+}
+
+/* 让所有元素继承默认光标（避免 <Html/> overlay 或 div 覆盖） */
+*,
+*::before,
+*::after {
+  cursor: inherit;
+}
+
+/* 只有 hover 可点击元素时才变成 click cursor（覆盖 tailwind cursor-pointer） */
 a:hover,
 button:hover,
 [role="button"]:hover,
+.cursor-pointer:hover,
 .cursor-click:hover {
-  cursor: url("/img/cursor-click.png") 2 2, pointer;
+  cursor: var(--cursor-click) 2 2, pointer !important;
+}
+
+/* 按下时也保持 click cursor */
+a:active,
+button:active,
+[role="button"]:active,
+.cursor-pointer:active,
+.cursor-click:active {
+  cursor: var(--cursor-click) 2 2, pointer !important;
+}
+
+/* 背景层永远使用默认 cursor */
+.cursor-default:hover {
+  cursor: var(--cursor-default) 2 2, default !important;
 }
