@@ -350,7 +350,7 @@ export default function InkBambooScene() {
                                 </mesh>
                             ))}
                         </InteractiveForest>
-                        <Environment preset="city" intensity={0.1} />
+                        <Environment preset="city" />
                     </Suspense>
 
                     <Float speed={0.2} rotationIntensity={0.01} floatIntensity={0.03} />
