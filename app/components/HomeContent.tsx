@@ -71,7 +71,16 @@ export default function HomeContent({ variant = "solid" }: { variant?: Variant }
     return (
         <main className={`${outer} relative`}>
             {variant === "overlay" && (
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(242,239,230,0.6)_0%,transparent_70%)] pointer-events-none" />
+                <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                        background: `radial-gradient(
+                circle at 50% 30%, 
+                rgba(210, 225, 215, 0.7) 40%,   /* 中心：淡青绿色 */
+                rgba(242, 239, 230, 0.4) 80%,  /* 中间：过渡到纸张色 */
+            )`
+                    }}
+                />
             )}
             <div className={`${container} relative z-10`}>
                 {/* Hero */}
