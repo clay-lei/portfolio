@@ -54,10 +54,11 @@ export default function HomeContent({ variant = "solid" }: { variant?: Variant }
     const card =
         variant === "solid"
             ? "rounded-2xl border border-zinc-200 p-6 shadow-sm"
-            : "rounded-2xl border border-white/30 bg-white/65 backdrop-blur-md p-6 shadow-xl";
+            // 降低白色的比例，增加模糊度，让它更通透
+            : "rounded-2xl border border-white/40 bg-white/30 backdrop-blur-xl p-6 shadow-2xl shadow-zinc-950/5";
 
     const pillBtnSolid =
-        "rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-zinc-800";
+        "rounded-full bg-zinc-900/90 px-5 py-2.5 text-sm font-medium text-white hover:bg-zinc-800 transition-all backdrop-blur-sm shadow-lg";
     const pillBtnGhost =
         variant === "solid"
             ? "rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-medium text-zinc-900 hover:bg-zinc-50"
@@ -68,8 +69,11 @@ export default function HomeContent({ variant = "solid" }: { variant?: Variant }
     const border = variant === "solid" ? "border-zinc-200" : "border-white/30";
 
     return (
-        <main className={outer}>
-            <div className={container}>
+        <main className={`${outer} relative`}>
+            {variant === "overlay" && (
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(242,239,230,0.6)_0%,transparent_70%)] pointer-events-none" />
+            )}
+            <div className={`${container} relative z-10`}>
                 {/* Hero */}
                 <header className="space-y-6">
                     <div
@@ -82,8 +86,8 @@ export default function HomeContent({ variant = "solid" }: { variant?: Variant }
                         Available for income · Seattle / Remote
                     </div>
 
-                    <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-                        Hi, I’m <span className="underline decoration-zinc-300">Millor Lei</span>.
+                    <h1 className="text-4xl font-bold tracking-tight sm:text-5xl text-zinc-900 drop-shadow-[0_0_15px_rgba(242,239,230,0.9)]">
+                        Hi, I’m <span className="underline decoration-zinc-400 underline-offset-8">Millor Lei</span>.
                         <br />
                         I build product-focused web experiences.
                     </h1>
@@ -138,10 +142,27 @@ export default function HomeContent({ variant = "solid" }: { variant?: Variant }
                         { label: "Strength", value: "Shipping fast", note: "Clean components + iteration" },
                         { label: "Impact", value: "Measured results", note: "Speed, accuracy, clarity" },
                     ].map((item) => (
-                        <div key={item.label} className={`rounded-2xl border p-5 ${card} ${border}`}>
-                            <p className={`text-sm ${subtleText2}`}>{item.label}</p>
-                            <p className="mt-1 text-lg font-semibold">{item.value}</p>
-                            <p className={`mt-1 text-sm ${subtleText2}`}>{item.note}</p>
+                        <div
+                            key={item.label}
+                            className="rounded-[22px] border-2 border-zinc-900 p-[2px] shadow-[0_10px_30px_rgba(0,0,0,0.18)]"
+                        >
+                            <div
+                                className={`
+                                rounded-2xl border p-5
+                                ${border}
+                                bg-[url('/img/background_1.png')]
+                                bg-cover bg-center
+                                relative overflow-hidden
+                              `}
+                            >
+                                <div className="absolute inset-0 bg-white/70 backdrop-blur-[1px]" />
+
+                                <div className="relative z-10">
+                                    <p className={`text-sm ${subtleText2}`}>{item.label}</p>
+                                    <p className="mt-1 text-lg font-semibold">{item.value}</p>
+                                    <p className={`mt-1 text-sm ${subtleText2}`}>{item.note}</p>
+                                </div>
+                            </div>
                         </div>
                     ))}
                 </section>
@@ -181,20 +202,30 @@ export default function HomeContent({ variant = "solid" }: { variant?: Variant }
                         {projects.map((p) => (
                             <div
                                 key={p.title}
-                                className={`rounded-2xl border p-6 shadow-sm hover:shadow-md transition-shadow ${card} ${border}`}
+                                className={`
+                                    relative overflow-hidden
+                                    rounded-2xl border p-6
+                                    ${border}
+                                    bg-[url('/img/background_2.png')]
+                                    bg-cover bg-center
+                                    shadow-sm hover:shadow-md transition-shadow
+                                  `}
                             >
-                                <p className={`text-sm ${subtleText2}`}>{p.subtitle}</p>
-                                <h3 className="mt-2 text-lg font-semibold">{p.title}</h3>
-                                <p className={`mt-2 text-sm leading-relaxed ${subtleText}`}>
-                                    {p.description}
-                                </p>
+                                <div className="absolute inset-0 bg-white/70 backdrop-blur-[1px]" />
+                                <div className="relative z-10">
+                                    <p className={`text-sm ${subtleText2}`}>{p.subtitle}</p>
+                                    <h3 className="mt-2 text-lg font-semibold">{p.title}</h3>
+                                    <p className={`mt-2 text-sm leading-relaxed ${subtleText}`}>
+                                        {p.description}
+                                    </p>
 
-                                <div className="mt-4 flex flex-wrap gap-3">
-                                    {p.links.map((l) => (
-                                        <Link key={l.label} href={l.href} className="text-sm font-medium hover:underline">
-                                            {l.label} →
-                                        </Link>
-                                    ))}
+                                    <div className="mt-4 flex flex-wrap gap-3">
+                                        {p.links.map((l) => (
+                                            <Link key={l.label} href={l.href} className="text-sm font-medium hover:underline">
+                                                {l.label} →
+                                            </Link>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         ))}

@@ -100,7 +100,7 @@ function InkLeafGeometry() {
 
 function LeafCluster({ position, baseRotation, scale, opacity, windRef, count }: any) {
     const groupRef = useRef<THREE.Group>(null!);
-    const phase = useMemo(() => Math.random() * 10, []);
+    const phase = useMemo(() => Math.random() * 8, []);
 
     useFrame((state) => {
         if (!windRef.current || windRef.current < 0.01) return;
@@ -237,7 +237,7 @@ export default function InkBambooScene() {
     const windRef = useRef(0);
 
     const bambooElements = useMemo(() => {
-        return Array.from({ length: 180 }).map((_, i) => {
+        return Array.from({ length: 100 }).map((_, i) => {
             const zPos = -Math.random() * 65;
             const distFactor = (zPos + 65) / 65;
             return {
@@ -325,32 +325,34 @@ export default function InkBambooScene() {
                     <ambientLight intensity={0.4} />
 
                     <Suspense fallback={<Loader />}>
-                        <InteractiveForest windRef={windRef}>
-                            <mesh position={[0, 20, -70]}>
-                                <planeGeometry args={[400, 200]} />
-                                <meshBasicMaterial color={INK_PALETTE.wash} transparent opacity={0.6} />
-                            </mesh>
-
-                            {bambooElements.map((b, i) => (
-                                <CurvedBamboo key={i} {...b} windRef={windRef} />
-                            ))}
-
-                            {rockElements.map((r, i) => (
-                                <AnimatedInkRock key={`rock-${i}`} {...r} />
-                            ))}
-
-                            <AnimatedInkRock position={[-22, -3.5, 15]} scale={9} opacity={0.9} />
-                            <AnimatedInkRock position={[28, -4, 10]} scale={8} opacity={0.85} />
-                            <AnimatedInkRock position={[0, -4.2, 20]} scale={6} opacity={0.7} />
-
-                            {Array.from({ length: 25 }).map((_, i) => (
-                                <mesh key={i} position={[0, -5 + i * 0.25, 25]} rotation={[-Math.PI / 2, 0, 0]}>
-                                    <planeGeometry args={[250, 180]} />
-                                    <meshBasicMaterial color={INK_PALETTE.fog} transparent opacity={0.55 - i * 0.02} depthWrite={false} />
+                        <group scale={0.78}>
+                            <InteractiveForest windRef={windRef}>
+                                <mesh position={[0, 20, -70]}>
+                                    <planeGeometry args={[400, 200]} />
+                                    <meshBasicMaterial color={INK_PALETTE.wash} transparent opacity={0.6} />
                                 </mesh>
-                            ))}
-                        </InteractiveForest>
-                        <Environment preset="city" />
+
+                                {bambooElements.map((b, i) => (
+                                    <CurvedBamboo key={i} {...b} windRef={windRef} />
+                                ))}
+
+                                {rockElements.map((r, i) => (
+                                    <AnimatedInkRock key={`rock-${i}`} {...r} />
+                                ))}
+
+                                <AnimatedInkRock position={[-22, -3.5, 15]} scale={9} opacity={0.9} />
+                                <AnimatedInkRock position={[28, -4, 10]} scale={8} opacity={0.85} />
+                                <AnimatedInkRock position={[0, -4.2, 20]} scale={6} opacity={0.7} />
+
+                                {Array.from({ length: 25 }).map((_, i) => (
+                                    <mesh key={i} position={[0, -5 + i * 0.25, 25]} rotation={[-Math.PI / 2, 0, 0]}>
+                                        <planeGeometry args={[250, 180]} />
+                                        <meshBasicMaterial color={INK_PALETTE.fog} transparent opacity={0.55 - i * 0.02} depthWrite={false} />
+                                    </mesh>
+                                ))}
+                            </InteractiveForest>
+                            <Environment preset="city" />
+                        </group>
                     </Suspense>
 
                     <Float speed={0.2} rotationIntensity={0.01} floatIntensity={0.03} />
@@ -374,11 +376,14 @@ export default function InkBambooScene() {
                 style={{ backgroundImage: `url('https://www.transparenttextures.com/patterns/handmade-paper.png')`, filter: 'contrast(1.2)' }}
             />
 
-            <div className="absolute right-12 bottom-12 font-calligraphy text-4xl text-zinc-800 opacity-60 [writing-mode:vertical-rl] tracking-[0.5em] drop-shadow-sm">
+            {/* 右侧：万竿烟雨 */}
+            <div className="absolute right-12 bottom-12 font-calligraphy text-2xl text-zinc-950 opacity-80 [writing-mode:vertical-rl] tracking-[0.8em] drop-shadow-sm">
                 万竿烟雨
             </div>
-            <div className="absolute left-12 bottom-12 font-calligraphy text-4xl text-zinc-800 opacity-60 [writing-mode:vertical-rl] tracking-[0.5em] drop-shadow-sm">
-                点击画面惊风雨 click
+
+            {/* 左侧：点击画面... */}
+            <div className="absolute left-12 bottom-12 font-calligraphy text-xl text-zinc-950 opacity-80 [writing-mode:vertical-rl] tracking-[0.6em] drop-shadow-sm">
+                点击画面惊风雨 <span className="font-sans text-[10px] tracking-normal opacity-50 uppercase">click</span>
             </div>
         </div>
     );
