@@ -49,13 +49,12 @@ export default function HomeContent({ variant = "solid" }: { variant?: Variant }
     const container =
         variant === "solid"
             ? "mx-auto max-w-5xl px-6 py-16"
-            : "mx-auto max-w-5xl px-6 py-16";
+            : "mx-auto max-w-5xl px-6 pt-12 pb-24";
 
     const card =
         variant === "solid"
             ? "rounded-2xl border border-zinc-200 p-6 shadow-sm"
-            // 降低白色的比例，增加模糊度，让它更通透
-            : "rounded-2xl border border-white/40 bg-white/30 backdrop-blur-xl p-6 shadow-2xl shadow-zinc-950/5";
+            : "rounded-2xl border border-white/40 bg-white/20 backdrop-blur-xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:bg-white/30 transition-all duration-500";
 
     const pillBtnSolid =
         "rounded-full bg-zinc-900/90 px-5 py-2.5 text-sm font-medium text-white hover:bg-zinc-800 transition-all backdrop-blur-sm shadow-lg";
@@ -64,19 +63,19 @@ export default function HomeContent({ variant = "solid" }: { variant?: Variant }
             ? "rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-medium text-zinc-900 hover:bg-zinc-50"
             : "rounded-full border border-white/40 bg-white/40 px-5 py-2.5 text-sm font-medium text-zinc-900 hover:bg-white/60";
 
-    const subtleText = variant === "solid" ? "text-zinc-700" : "text-zinc-800/80";
-    const subtleText2 = variant === "solid" ? "text-zinc-600" : "text-zinc-800/70";
+    const subtleText = variant === "solid" ? "text-zinc-700" : "text-zinc-900/80 font-medium";
+    const subtleText2 = variant === "solid" ? "text-zinc-600" : "text-zinc-800/60";
     const border = variant === "solid" ? "border-zinc-200" : "border-white/30";
 
     return (
-        <main className={`${outer} relative`}>
+        <main className={`${outer} relative selection:bg-emerald-100`}>
             {variant === "overlay" && (
                 <div
                     className="absolute inset-0 pointer-events-none"
                     style={{
                         background: `radial-gradient(
                 circle at 50% 30%, 
-                rgba(210, 225, 215, 0.7) 40%,   /* 中心：淡青绿色 */
+                rgba(210, 225, 215, 0.7) 10%,   /* 中心：淡青绿色 */
                 rgba(242, 239, 230, 0.4) 80%,  /* 中间：过渡到纸张色 */
             )`
                     }}
@@ -95,10 +94,12 @@ export default function HomeContent({ variant = "solid" }: { variant?: Variant }
                         Available for income · Seattle / Remote
                     </div>
 
-                    <h1 className="text-4xl font-bold tracking-tight sm:text-5xl text-zinc-900 drop-shadow-[0_0_15px_rgba(242,239,230,0.9)]">
-                        Hi, I’m <span className="underline decoration-zinc-400 underline-offset-8">Millor Lei</span>.
+
+                    <h1 className={`text-4xl font-bold tracking-tight sm:text-6xl text-zinc-950 leading-[1.15] ${variant === "overlay" ? "drop-shadow-[0_0_20px_rgba(242,239,230,1)]" : ""
+                        }`}>
+                        Hi, I’m <span className="underline decoration-zinc-400/50 underline-offset-[12px] hover:decoration-emerald-400 transition-colors">Millor Lei</span>.
                         <br />
-                        I build product-focused web experiences.
+                        <span className="opacity-90">I build product-focused web experiences.</span>
                     </h1>
 
                     <p className={`max-w-2xl text-lg leading-relaxed ${subtleText}`}>
@@ -145,7 +146,7 @@ export default function HomeContent({ variant = "solid" }: { variant?: Variant }
                 </header>
 
                 {/* Highlights */}
-                <section className="mt-14 grid gap-4 sm:grid-cols-3">
+                <section className="mt-14 grid gap-6 sm:grid-cols-3">
                     {[
                         { label: "Focus", value: "Frontend + Full-stack", note: "Next.js · APIs · UI/UX" },
                         { label: "Strength", value: "Shipping fast", note: "Clean components + iteration" },
@@ -153,7 +154,7 @@ export default function HomeContent({ variant = "solid" }: { variant?: Variant }
                     ].map((item) => (
                         <div
                             key={item.label}
-                            className="rounded-[22px] border-2 border-zinc-900 p-[2px] shadow-[0_10px_30px_rgba(0,0,0,0.18)]"
+                            className="rounded-[24px] border-2 border-zinc-900 p-[2px] shadow-[0_10px_30px_rgba(0,0,0,0.18)]"
                         >
                             <div
                                 className={`
@@ -176,28 +177,6 @@ export default function HomeContent({ variant = "solid" }: { variant?: Variant }
                     ))}
                 </section>
 
-                {/* Featured */}
-                <section className="mt-16">
-                    <div className={`rounded-2xl border p-6 shadow-sm flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between ${card} ${border}`}>
-                        <div>
-                            <p className={`text-sm ${subtleText2}`}>Interactive</p>
-                            <h2 className="mt-2 text-xl font-semibold">Ink Bamboo Forest (Three.js)</h2>
-                            <p className={`mt-1 text-sm max-w-2xl ${subtleText}`}>
-                                A lightweight 3D ink-wash bamboo scene with an intro zoom-in and subtle mouse-driven sway.
-                            </p>
-                        </div>
-
-                        <div className="flex gap-3">
-                            <Link href="/ink" className={pillBtnSolid}>
-                                Open Scene →
-                            </Link>
-                            <Link href="/projects" className={pillBtnGhost}>
-                                View Work
-                            </Link>
-                        </div>
-                    </div>
-                </section>
-
                 {/* Projects */}
                 <section className="mt-16">
                     <div className="flex items-end justify-between gap-4">
@@ -211,7 +190,11 @@ export default function HomeContent({ variant = "solid" }: { variant?: Variant }
                         {projects.map((p) => (
                             <div
                                 key={p.title}
-                                className={`
+                                /* 1. 外层黑边容器：这里是核心改动 */
+                                className="rounded-[24px] border-2 border-zinc-900 p-[2px] shadow-[0_8px_20px_rgba(0,0,0,0.12)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.18)] transition-all"
+                            >
+                                <div
+                                    className={`
                                     relative overflow-hidden
                                     rounded-2xl border p-6
                                     ${border}
@@ -219,21 +202,22 @@ export default function HomeContent({ variant = "solid" }: { variant?: Variant }
                                     bg-cover bg-center
                                     shadow-sm hover:shadow-md transition-shadow
                                   `}
-                            >
-                                <div className="absolute inset-0 bg-white/70 backdrop-blur-[1px]" />
-                                <div className="relative z-10">
-                                    <p className={`text-sm ${subtleText2}`}>{p.subtitle}</p>
-                                    <h3 className="mt-2 text-lg font-semibold">{p.title}</h3>
-                                    <p className={`mt-2 text-sm leading-relaxed ${subtleText}`}>
-                                        {p.description}
-                                    </p>
+                                >
+                                    <div className="absolute inset-0 bg-white/70 backdrop-blur-[1px]" />
+                                    <div className="relative z-10">
+                                        <p className={`text-sm ${subtleText2}`}>{p.subtitle}</p>
+                                        <h3 className="mt-2 text-lg font-semibold">{p.title}</h3>
+                                        <p className={`mt-2 text-sm leading-relaxed ${subtleText}`}>
+                                            {p.description}
+                                        </p>
 
-                                    <div className="mt-4 flex flex-wrap gap-3">
-                                        {p.links.map((l) => (
-                                            <Link key={l.label} href={l.href} className="text-sm font-medium hover:underline">
-                                                {l.label} →
-                                            </Link>
-                                        ))}
+                                        <div className="mt-4 flex flex-wrap gap-3">
+                                            {p.links.map((l) => (
+                                                <Link key={l.label} href={l.href} className="text-sm font-medium hover:underline">
+                                                    {l.label} →
+                                                </Link>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

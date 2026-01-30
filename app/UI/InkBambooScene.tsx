@@ -47,12 +47,12 @@ function Loader() {
 // 1. 起始位置：贴近地面 (y=0.8)，靠近中心 (z=8)
 const CAMERA_START_POS = [0, 0.8, 8] as const;
 // 2. 结束位置：拉远到正常的平视视角
-const CAMERA_END_POS = new THREE.Vector3(0, 6, 32);
+const CAMERA_END_POS = new THREE.Vector3(0, 4, 32);
 
 // 3. 起始观察点：高高仰望天空 (y=60)
 const LOOK_AT_START = new THREE.Vector3(0, 60, 0);
 // 4. 结束观察点：平视前方 (y=5)
-const LOOK_AT_END = new THREE.Vector3(0, 6, 0);
+const LOOK_AT_END = new THREE.Vector3(0, 4, 0);
 
 function IntroCamera({ onDone }: { onDone: () => void }) {
     const { camera } = useThree();
@@ -360,7 +360,7 @@ export default function InkBambooScene() {
                     <Html fullscreen style={{ pointerEvents: "none" }}>
                         {introDone && (
                             <div className="w-full h-full overflow-y-auto pointer-events-auto">
-                                <div className="-translate-y-15">
+                                <div className="-translate-y-2">
                                     <HomeContent variant="overlay" />
                                 </div>
                             </div>
