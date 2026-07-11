@@ -24,7 +24,8 @@ type Project = {
 const InkBambooScene = dynamic(
   () => import('@/app/UI/InkBambooScene').then(mod => mod.default),
   {
-    ssr: false
+    ssr: false,
+    loading: () => <div className='fixed inset-0 bg-[#f2efe6]' />
   }
 )
 
@@ -33,7 +34,7 @@ const projects: Project[] = [
     id: 'homehudl',
     title: 'Homehudl Onboarding Chatbot',
     subtitle: 'Next.js · TypeScript · Node.js',
-    timeframe: 'Software Development Intern · 2025–Present',
+    timeframe: 'Software Development Intern · Oct 2025 – May 2026',
     overview:
       'Built a conversational onboarding flow to replace a static multi-page questionnaire, improving speed, clarity, and data quality while keeping the UI clean and product-friendly.',
     role: [
@@ -157,7 +158,7 @@ export default function ProjectsPage () {
     >
       {/* 关键点2: 背景层固定定位，z-index 为 0 */}
       <div className='fixed inset-0 z-0'>
-        <InkBambooScene />
+        <InkBambooScene backgroundOnly />
       </div>
 
       {/* 关键点3: 内容层 pointer-events-none 允许点击穿透到 Canvas 触发惊风雨效果 */}

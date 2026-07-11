@@ -48,15 +48,20 @@ function Loader () {
 
 // --- 改动核心：全新的仰拍开场相机 ---
 
-// 1. 起始位置：贴近地面 (y=0.8)，靠近中心 (z=8)
-const CAMERA_START_POS = [0, 0.8, 8] as const
-// 2. 结束位置：拉远到正常的平视视角
+// 相机只负责 Three.js 背景，不再负责网页 DOM 的定位
+const CAMERA_START_POS: [number, number, number] = [0, 0.8, 8]
+const CAMERA_START_VECTOR = new THREE.Vector3(...CAMERA_START_POS)
 const CAMERA_END_POS = new THREE.Vector3(0, 4, 32)
 
-// 3. 起始观察点：高高仰望天空 (y=60)
 const LOOK_AT_START = new THREE.Vector3(0, 60, 0)
-// 4. 结束观察点：平视前方 (y=5)
-const LOOK_AT_END = new THREE.Vector3(0, 4, 0)
+const LOOK_AT_END = new THREE.Vector3(0, 6, 0)
+const INTRO_DURATION = 2.2
+
+type InkBambooSceneProps = {
+  backgroundOnly?: boolean
+}
+
+let inkIntroHasPlayed = false
 
 function IntroCamera ({ onDone }: { onDone: () => void }) {
   const { camera } = useThree()
@@ -65,21 +70,32 @@ function IntroCamera ({ onDone }: { onDone: () => void }) {
   const progressRef = useRef(0)
 
   useEffect(() => {
-    camera.position.set(...CAMERA_START_POS)
+    camera.position.copy(CAMERA_START_VECTOR)
     camera.lookAt(LOOK_AT_START)
   }, [camera])
 
   useFrame((state, delta) => {
-    const speed = delta * 0.5
+    if (doneRef.current) return
 
-    // 相机 lerp
-    state.camera.position.lerp(CAMERA_END_POS, speed)
-    currentLookAt.lerp(LOOK_AT_END, speed)
+    progressRef.current = Math.min(
+      progressRef.current + delta / INTRO_DURATION,
+      1
+    )
+
+    const progress = progressRef.current
+    const eased = 1 - Math.pow(1 - progress, 3)
+
+    state.camera.position.lerpVectors(
+      CAMERA_START_VECTOR,
+      CAMERA_END_POS,
+      eased
+    )
+    currentLookAt.lerpVectors(LOOK_AT_START, LOOK_AT_END, eased)
     state.camera.lookAt(currentLookAt)
 
-    // 用时间累计一个“进度”，大概 2.8s~3.5s 就算完成（你可以调）
-    progressRef.current += delta
-    if (!doneRef.current && progressRef.current > 3.2) {
+    if (progress >= 1) {
+      state.camera.position.copy(CAMERA_END_POS)
+      state.camera.lookAt(LOOK_AT_END)
       doneRef.current = true
       onDone()
     }
@@ -167,7 +183,7 @@ function CurvedBamboo ({
         const leafCount = Math.floor(1 + Math.random() * 3)
 
         const leafY = i * segH + 0.4 // 叶簇在这段里的高度（相对竹子底部）
-        const allowLeaves = leafY <= 35
+        const allowLeaves = leafY <= 30
 
         return (
           <group
@@ -232,7 +248,7 @@ function InteractiveForest ({
   useFrame((state, delta) => {
     const mx = state.mouse.x
     // 只有当相机飞到比较近的地方时，才开启鼠标视差
-    if (state.camera.position.z < 40 && state.camera.position.y > 4) {
+    if (state.camera.position.z < 40 && state.camera.position.y >= 3.9) {
       groupRef.current.rotation.y = THREE.MathUtils.lerp(
         groupRef.current.rotation.y,
         mx * 0.08,
@@ -252,28 +268,42 @@ function InteractiveForest ({
   return <group ref={groupRef}>{children}</group>
 }
 
-function AnimatedInkRock ({ position, scale, opacity = 0.8 }: any) {
+function AnimatedInkRock ({
+  position,
+  scale,
+  opacity = 0.8,
+  animate = true
+}: any) {
   const meshRef = useRef<THREE.Mesh>(null!)
   const [delay] = useState(() => Math.random() * 1.5)
 
   const safePos = position || [0, -10, 0]
-  const startY = safePos[1] - 2.4
   const targetY = safePos[1]
+  const startY = animate ? targetY - 2.4 : targetY
 
   useFrame(state => {
+    if (!animate) return
+
     const t = state.clock.elapsedTime
+
     if (t < delay) {
-      if (meshRef.current) meshRef.current.visible = false
+      if (meshRef.current) {
+        meshRef.current.visible = false
+      }
       return
     }
 
     if (meshRef.current) {
       meshRef.current.visible = true
+
       const progress = Math.min((t - delay) / 3, 1)
       const ease = 1 - Math.pow(1 - progress, 3)
+
       meshRef.current.position.y = startY + (targetY - startY) * ease
+
       const mat = meshRef.current.material as THREE.MeshLambertMaterial
-      if (mat) mat.opacity = opacity * ease
+
+      mat.opacity = opacity * ease
     }
   })
 
@@ -285,24 +315,31 @@ function AnimatedInkRock ({ position, scale, opacity = 0.8 }: any) {
       scale={[scale, scale * 0.7, scale * 1.3]}
     >
       <dodecahedronGeometry args={[1, 0]} />
+
       <meshLambertMaterial
         color={INK_PALETTE.inkDeep}
         transparent
-        opacity={0}
+        opacity={animate ? 0 : opacity}
       />
     </mesh>
   )
 }
 
-export default function InkBambooScene () {
-  // const [showLoader, setShowLoader] = useState(true);
+export default function InkBambooScene ({
+  backgroundOnly = false
+}: InkBambooSceneProps) {
+  const [introDone, setIntroDone] = useState(
+    () => backgroundOnly || inkIntroHasPlayed
+  )
 
-  // useEffect(() => {
-  //     const t = setTimeout(() => setShowLoader(false), 900); // 强制显示 0.9s
-  //     return () => clearTimeout(t);
-  // }, []);
-  const [introDone, setIntroDone] = useState(false)
   const windRef = useRef(0)
+
+  const shouldPlayIntro = !backgroundOnly && !introDone
+
+  const handleIntroDone = () => {
+    inkIntroHasPlayed = true
+    setIntroDone(true)
+  }
 
   const bambooElements = useMemo(() => {
     return Array.from({ length: 100 }).map((_, i) => {
@@ -337,7 +374,7 @@ export default function InkBambooScene () {
 
   return (
     <div
-      className='h-screen w-screen bg-[#f2efe6] overflow-hidden cursor-pointer'
+      className='relative isolate min-h-screen w-full bg-[#f2efe6] cursor-pointer'
       onPointerDown={handlePointerDown}
     >
       <style jsx global>{`
@@ -355,38 +392,57 @@ export default function InkBambooScene () {
             opacity: 1;
           }
         }
+
         .fade-in {
-          animation: fadeIn 2s ease-out forwards; /* 增加淡入时间到 2s */
+          animation: fadeIn 1.2s ease-out forwards;
         }
       `}</style>
 
-      {!introDone && (
-        <div className='absolute inset-0 z-50 pointer-events-none'>
-          <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center w-64'>
-            <div className='text-zinc-600 font-calligraphy text-2xl tracking-[0.3em] mb-2 animate-pulse whitespace-nowrap'>
+      {shouldPlayIntro && (
+        <div className='fixed inset-0 z-50 pointer-events-none'>
+          <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex w-64 flex-col items-center justify-center'>
+            <div className='mb-2 whitespace-nowrap font-calligraphy text-2xl tracking-[0.3em] text-zinc-600 animate-pulse'>
               墨韵生成中
             </div>
-            <div className='text-zinc-400 font-sans text-xs tracking-widest uppercase mb-2'>
+            <div className='mb-2 font-sans text-xs uppercase tracking-widest text-zinc-400'>
               Generating Ink Rhythm...
             </div>
-            <div className='w-full h-[1px] bg-zinc-300 relative overflow-hidden'>
-              <div className='absolute left-0 top-0 h-full bg-zinc-600 w-[70%] opacity-70' />
+            <div className='relative h-px w-full overflow-hidden bg-zinc-300'>
+              <div className='absolute left-0 top-0 h-full w-[70%] bg-zinc-600 opacity-70' />
             </div>
-            <div className='text-zinc-400 font-sans text-[10px] mt-1 tracking-widest opacity-60'>
+            <div className='mt-1 font-sans text-[10px] tracking-widest text-zinc-400 opacity-60'>
               Loading…
             </div>
           </div>
         </div>
       )}
 
-      <div
-        className='h-screen w-screen bg-[#f2efe6] overflow-hidden cursor-default'
-        onPointerDown={handlePointerDown}
-      >
-        <Canvas className='animate-in fade-in' dpr={1}>
-          {/* 这里的 position 必须和 CAMERA_START_POS 一致，防止第一帧跳变 */}
-          <PerspectiveCamera makeDefault position={CAMERA_START_POS} fov={45} />
-          <IntroCamera onDone={() => setIntroDone(true)} />
+      {/* Three.js 只是固定背景。它不再包住网页内容。 */}
+      <div className='fixed inset-0 z-0 h-[100dvh] w-full overflow-hidden bg-[#f2efe6]'>
+        <Canvas
+          className={`h-full w-full bg-[#f2efe6] ${
+            shouldPlayIntro ? 'fade-in' : ''
+          }`}
+          dpr={1}
+          gl={{
+            alpha: false,
+            antialias: true
+          }}
+          onCreated={({ gl }) => {
+            gl.setClearColor('#f2efe6', 1)
+          }}
+        >
+          <PerspectiveCamera
+            makeDefault
+            position={
+              shouldPlayIntro
+                ? CAMERA_START_POS
+                : [CAMERA_END_POS.x, CAMERA_END_POS.y, CAMERA_END_POS.z]
+            }
+            fov={45}
+          />
+
+          {shouldPlayIntro && <IntroCamera onDone={handleIntroDone} />}
 
           <fog attach='fog' args={[INK_PALETTE.fog, 5, 65]} />
 
@@ -398,93 +454,96 @@ export default function InkBambooScene () {
           <directionalLight position={[10, 20, 10]} intensity={0.8} />
           <ambientLight intensity={0.4} />
 
-          <Suspense fallback={<Loader />}>
-            <group scale={0.78}>
-              <InteractiveForest windRef={windRef}>
-                <mesh position={[0, 20, -70]}>
-                  <planeGeometry args={[400, 200]} />
+          <group scale={0.78}>
+            <InteractiveForest windRef={windRef}>
+              <mesh position={[0, 20, -70]}>
+                <planeGeometry args={[400, 200]} />
+                <meshBasicMaterial
+                  color={INK_PALETTE.wash}
+                  transparent
+                  opacity={0.6}
+                />
+              </mesh>
+
+              {bambooElements.map((b, i) => (
+                <CurvedBamboo key={i} {...b} windRef={windRef} />
+              ))}
+
+              {rockElements.map((r, i) => (
+                <AnimatedInkRock
+                  key={`rock-${i}`}
+                  {...r}
+                  animate={shouldPlayIntro}
+                />
+              ))}
+
+              <AnimatedInkRock
+                position={[-22, -3.5, 15]}
+                scale={9}
+                opacity={0.9}
+                animate={shouldPlayIntro}
+              />
+              <AnimatedInkRock
+                position={[28, -4, 10]}
+                scale={8}
+                opacity={0.85}
+                animate={shouldPlayIntro}
+              />
+              <AnimatedInkRock
+                position={[0, -4.2, 20]}
+                scale={6}
+                opacity={0.7}
+                animate={shouldPlayIntro}
+              />
+
+              {Array.from({ length: 25 }).map((_, i) => (
+                <mesh
+                  key={i}
+                  position={[0, -5 + i * 0.25, 25]}
+                  rotation={[-Math.PI / 2, 0, 0]}
+                >
+                  <planeGeometry args={[250, 180]} />
                   <meshBasicMaterial
-                    color={INK_PALETTE.wash}
+                    color={INK_PALETTE.fog}
                     transparent
-                    opacity={0.6}
+                    opacity={0.55 - i * 0.02}
+                    depthWrite={false}
                   />
                 </mesh>
+              ))}
+            </InteractiveForest>
+          </group>
 
-                {bambooElements.map((b, i) => (
-                  <CurvedBamboo key={i} {...b} windRef={windRef} />
-                ))}
-
-                {rockElements.map((r, i) => (
-                  <AnimatedInkRock key={`rock-${i}`} {...r} />
-                ))}
-
-                <AnimatedInkRock
-                  position={[-22, -3.5, 15]}
-                  scale={9}
-                  opacity={0.9}
-                />
-                <AnimatedInkRock
-                  position={[28, -4, 10]}
-                  scale={8}
-                  opacity={0.85}
-                />
-                <AnimatedInkRock
-                  position={[0, -4.2, 20]}
-                  scale={6}
-                  opacity={0.7}
-                />
-
-                {Array.from({ length: 25 }).map((_, i) => (
-                  <mesh
-                    key={i}
-                    position={[0, -5 + i * 0.25, 25]}
-                    rotation={[-Math.PI / 2, 0, 0]}
-                  >
-                    <planeGeometry args={[250, 180]} />
-                    <meshBasicMaterial
-                      color={INK_PALETTE.fog}
-                      transparent
-                      opacity={0.55 - i * 0.02}
-                      depthWrite={false}
-                    />
-                  </mesh>
-                ))}
-              </InteractiveForest>
-              <Environment preset='city' />
-            </group>
+          <Suspense fallback={null}>
+            <Environment preset='city' />
           </Suspense>
 
           <Float speed={0.2} rotationIntensity={0.01} floatIntensity={0.03} />
-
-          <Html fullscreen style={{ pointerEvents: 'none' }}>
-            {introDone && (
-              <div className='w-full h-full overflow-y-auto pointer-events-auto'>
-                <div className='-translate-y-2'>
-                  <HomeContent variant='overlay' />
-                </div>
-              </div>
-            )}
-          </Html>
         </Canvas>
       </div>
 
       <div
-        className='pointer-events-none absolute inset-0 opacity-[0.15] mix-blend-multiply'
+        className='pointer-events-none fixed inset-0 z-[1] opacity-[0.15] mix-blend-multiply'
         style={{
           backgroundImage: `url('https://www.transparenttextures.com/patterns/handmade-paper.png')`,
           filter: 'contrast(1.2)'
         }}
       />
 
-      {/* 右侧：万竿烟雨 */}
-      <div className='absolute right-12 bottom-12 font-calligraphy text-2xl text-zinc-950 opacity-80 [writing-mode:vertical-rl] tracking-[0.8em] drop-shadow-sm'>
+      {/* 正常网页 DOM：由浏览器布局，不受 Three.js camera / lookAt 影响。 */}
+      {!backgroundOnly && introDone && (
+        <div className='relative z-10 w-full fade-in'>
+          <HomeContent variant='overlay' />
+        </div>
+      )}
+
+      <div className='pointer-events-none fixed right-6 bottom-8 z-20 font-calligraphy text-xl tracking-[0.6em] text-zinc-950 opacity-70 [writing-mode:vertical-rl] drop-shadow-sm sm:right-12 sm:bottom-12 sm:text-2xl sm:tracking-[0.8em]'>
         万竿烟雨
       </div>
 
-      {/* 左侧：点击画面... */}
-      <div className='absolute left-12 bottom-12 font-calligraphy text-xl text-zinc-950 opacity-80 [writing-mode:vertical-rl] tracking-[0.6em] drop-shadow-sm'>
+      <div className='pointer-events-none fixed left-6 bottom-8 z-20 font-calligraphy text-base tracking-[0.45em] text-zinc-950 opacity-70 [writing-mode:vertical-rl] drop-shadow-sm sm:left-12 sm:bottom-12 sm:text-xl sm:tracking-[0.6em]'>
         点击画面惊风雨{' '}
-        <span className='font-sans text-[10px] tracking-normal opacity-50 uppercase'>
+        <span className='font-sans text-[10px] uppercase tracking-normal opacity-50'>
           click
         </span>
       </div>
