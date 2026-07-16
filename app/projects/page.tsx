@@ -32,108 +32,199 @@ const InkBambooScene = dynamic(
 const projects: Project[] = [
   {
     id: 'homehudl',
-    title: 'Homehudl Onboarding Chatbot',
-    subtitle: 'Next.js · TypeScript · Node.js',
-    timeframe: 'Software Development Intern · Oct 2025 – May 2026',
+    title: 'Homehudl Real Estate SaaS Platform',
+    subtitle: 'Next.js · TypeScript · Node.js · REST APIs',
+    timeframe: 'Software Developer · Sep 2025 – May 2026',
     overview:
-      'Built a conversational onboarding flow to replace a static multi-page questionnaire, improving speed, clarity, and data quality while keeping the UI clean and product-friendly.',
+      'Worked on a production real estate SaaS platform supporting multi-role onboarding, structured client data, backend integrations, and real-time agent matching.',
     role: [
-      'Owned UI implementation for conversational steps and state management',
-      'Collaborated with PM/Design to iterate on flow and copy',
-      'Integrated client-side validation and structured payload output for backend consumption'
+      'Developed full-stack product features across the Next.js frontend and Node.js service layer',
+      'Refactored application architecture into reusable services, shared types, and centralized API workflows',
+      'Collaborated with product and engineering stakeholders to improve onboarding reliability and completion'
     ],
     highlights: [
-      'Designed a chat-like step system with clear progression and recoverable edits',
-      'Built reusable question components (text, dropdown, calendar, range, drag list, map/address)',
-      'Improved user clarity with microcopy and consistent spacing/typography'
+      'Refactored a large Next.js and TypeScript codebase into modular service-oriented components',
+      'Built dynamic onboarding workflows supporting multiple user roles and conditional form paths',
+      'Designed a transformation pipeline that converted client state into backend-compatible JSON schemas',
+      'Implemented authentication-aware API requests, schema validation, and structured error handling',
+      'Developed services supporting agent matching, API synchronization, and engagement creation'
     ],
-    tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Node.js'],
+    tech: [
+      'Next.js',
+      'React',
+      'TypeScript',
+      'Node.js',
+      'REST APIs',
+      'Schema Validation',
+      'Tailwind CSS'
+    ],
     outcomes: [
-      'Reduced friction by guiding users one step at a time (vs. long form)',
-      'More structured answers for downstream matching / processing',
-      'Cleaner UI with consistent components and scalable layout patterns'
+      'Improved development velocity by 30% through shared services and modular architecture',
+      'Increased onboarding completion by 40% through clearer multi-step user workflows',
+      'Reduced user drop-off by 25% through more reliable matching and data synchronization'
     ],
     learnings: [
-      'How to design UI state so it’s easy to change steps without losing user trust',
-      'Where validation belongs (per-step vs. final submit) to reduce frustration',
-      'Small copy + spacing changes can dramatically improve completion behavior'
+      'Frontend reliability depends heavily on consistent schemas and clear API contracts',
+      'Multi-role products require state management designed around user workflows rather than individual screens',
+      'Reusable service layers reduce duplicated logic and make production debugging significantly easier'
     ],
     image: {
       src: '/images/projects/homehudl/hero.png',
-      alt: 'Homehudl onboarding chatbot UI'
+      alt: 'Homehudl real estate onboarding platform'
     }
   },
   {
     id: 'aisiem',
-    title: 'AI-SIEM Conversational Assistant (Capstone)',
-    subtitle: 'RAG · Observability · Splunk · OpenTelemetry',
-    timeframe: 'UW Capstone · 2025–2026',
+    title: 'AI-SIEM Conversational Assistant',
+    subtitle: 'RAG · Docker · OCI · OpenTelemetry · Splunk',
+    timeframe: 'Software Development Intern · Dec 2025 – Jun 2026',
     overview:
-      'Prototyped an AI assistant for security operations with telemetry, dashboards, and VM-based containerized services, focusing on reliable signals and practical workflows.',
+      'Deployed and instrumented a containerized AI assistant designed for security operations, combining retrieval-augmented generation, cloud infrastructure, and end-to-end observability.',
     role: [
-      'Implemented observability plumbing for services via OpenTelemetry',
-      'Connected telemetry pipeline to Splunk dashboards for monitoring and debugging',
-      'Helped define what “useful answers” look like in SOC-style queries'
+      'Deployed and maintained containerized services on Oracle Cloud Infrastructure',
+      'Built RAG workflows connecting chatbot services with ChromaDB knowledge retrieval',
+      'Implemented telemetry pipelines for monitoring LLM and service behavior',
+      'Developed backend workflows for retrieval, chatbot interactions, and human-agent escalation'
     ],
     highlights: [
-      'Instrumented services and validated traces/logs/metrics end-to-end',
-      'Containerized deployment on a VM to mirror real operational constraints',
-      'Established a repeatable setup path (config + documentation) for teammates'
+      'Containerized chatbot, vector database, telemetry collector, and analytics services with Docker',
+      'Built RAG pipelines using ChromaDB and LLM orchestration',
+      'Instrumented request latency, usage metrics, logs, and traces with OpenTelemetry',
+      'Integrated telemetry with Splunk dashboards for system monitoring and debugging',
+      'Designed distributed logging and tracing workflows across multiple services'
     ],
     tech: [
+      'Python',
       'Docker',
+      'OCI',
+      'ChromaDB',
+      'RAG',
       'OpenTelemetry',
       'Splunk',
-      'RAG patterns',
-      'VM deployment'
+      'REST APIs'
     ],
     outcomes: [
-      'Faster debugging with consistent traces and dashboards',
-      'Clearer visibility into service health and pipeline reliability',
-      'Improved team alignment through shared configs and setup docs'
+      'Created end-to-end visibility into chatbot latency, usage, errors, and service health',
+      'Improved fault detection and debugging through centralized logs, traces, and dashboards',
+      'Established a repeatable cloud deployment and observability workflow for the project'
     ],
     learnings: [
-      'Observability is a product: dashboards should answer real questions quickly',
-      'Collector/exporter configuration is often the make-or-break point',
-      'Operational constraints (VM, permissions, networking) shape architecture decisions'
+      'Observability should be designed around operational questions, not just collected metrics',
+      'RAG reliability depends on retrieval quality, data organization, and service-level monitoring',
+      'Cloud networking, secrets, deployment configuration, and telemetry are core parts of AI product engineering'
     ],
     image: {
       src: '/images/projects/aisiem/architecture.png',
-      alt: 'AI-SIEM architecture / telemetry pipeline diagram'
+      alt: 'AI-SIEM RAG and observability architecture'
     }
   },
   {
     id: 'iplanner',
-    title: 'iPlanner Course Planner',
-    subtitle: 'Node.js · MongoDB · Auth',
-    timeframe: 'Course project · 2025',
+    title: 'iPlanner Course Planning Platform',
+    subtitle: 'Next.js · Node.js · MongoDB',
+    timeframe: 'Full-Stack Project · Winter 2025',
     overview:
-      'Built a course planning web app with login, schedule management, add/remove functionality, and requirement checking. Focused on data correctness and a straightforward UX.',
+      'Built a full-stack course planning application that allows users to search courses, manage schedules, and generate academic plans using persistent application data.',
     role: [
-      'Implemented planner endpoints to validate and manage courses',
-      'Designed schema structure for user + course data inside a single models file',
-      'Worked within MVP constraints (no React; HTML pages + backend APIs)'
+      'Developed frontend and backend workflows for course search and schedule management',
+      'Designed REST API endpoints for course validation, filtering, and planner operations',
+      'Created MongoDB and Mongoose schemas for users, courses, and saved schedules'
     ],
     highlights: [
-      'Auth via school Google login (project requirement)',
-      'Planner endpoints query DB for course validation and CRUD',
-      'Migrated from hardcoded JSON toward user-specific persisted data'
+      'Implemented real-time course filtering and schedule generation',
+      'Built create, read, update, and delete workflows for user schedules',
+      'Designed REST APIs connecting the planner interface to persistent MongoDB data',
+      'Optimized schema structure and database queries for scalable course datasets'
     ],
-    tech: ['Node.js', 'Express', 'MongoDB', 'HTML/CSS/JS', 'REST APIs'],
+    tech: [
+      'Next.js',
+      'Node.js',
+      'Express.js',
+      'MongoDB',
+      'Mongoose',
+      'REST APIs'
+    ],
     outcomes: [
-      'Users can build and edit schedules without manual tracking',
-      'Data model supports saving courses per user (scalable beyond demo)',
-      'Clear separation between static course catalog and user planner data'
+      'Enabled users to build and update course schedules without manual tracking',
+      'Moved planner data from hardcoded files into user-specific database records',
+      'Created reusable API and schema patterns for future planning features'
     ],
     learnings: [
-      'Schemas and endpoints should be designed around user workflows, not data storage convenience',
-      'Incremental migration (JSON → DB) is manageable with clear boundaries',
-      'Simple UI + clean endpoints often beats over-engineering for MVPs'
+      'Database schemas should reflect real user workflows rather than only storage convenience',
+      'Clear API boundaries make frontend and backend development easier to test independently',
+      'Query design becomes increasingly important as the course dataset grows'
     ],
     image: {
       src: '/images/projects/iplanner/ui.png',
-      alt: 'iPlanner UI screenshot'
+      alt: 'iPlanner course planning interface'
     }
+  },
+  {
+    id: 'let-sql-fly',
+    title: 'Let SQL Fly',
+    subtitle: 'PostgreSQL · SQL · ETL · Data Modeling',
+    timeframe: 'Data Analytics Project · Spring 2025',
+    overview:
+      'Designed a relational data analytics platform for querying and processing large structured datasets using PostgreSQL and advanced SQL.',
+    role: [
+      'Designed normalized schemas and relationships across more than six entities',
+      'Developed analytical queries for reporting and data exploration',
+      'Built ETL workflows to clean, transform, and load structured datasets'
+    ],
+    highlights: [
+      'Created normalized relational schemas with primary and foreign key constraints',
+      'Wrote advanced queries using joins, CTEs, aggregations, and window functions',
+      'Processed and analyzed datasets containing more than one million records',
+      'Improved query structure through indexing and relational design'
+    ],
+    tech: [
+      'PostgreSQL',
+      'SQL',
+      'CTEs',
+      'Window Functions',
+      'ETL',
+      'Relational Modeling'
+    ],
+    outcomes: [
+      'Maintained data integrity across interconnected entities',
+      'Enabled complex analytical reporting over large datasets',
+      'Created repeatable data transformation and query workflows'
+    ],
+    learnings: [
+      'Good relational modeling reduces query complexity and prevents inconsistent data',
+      'Indexes and query plans matter significantly when datasets grow',
+      'ETL design should make data validation and failure handling explicit'
+    ]
+  },
+  {
+    id: 'aws-deployment',
+    title: 'AWS Web Application Deployment',
+    subtitle: 'AWS S3 · CloudFront · IAM · GitHub Actions',
+    timeframe: 'Cloud Deployment Project · Autumn 2024',
+    overview:
+      'Deployed a production web application using AWS infrastructure and automated the delivery workflow through GitHub Actions.',
+    role: [
+      'Configured S3 hosting and CloudFront content delivery',
+      'Created IAM policies following least-privilege access principles',
+      'Implemented automated build and deployment workflows using GitHub Actions'
+    ],
+    highlights: [
+      'Hosted static application assets through Amazon S3',
+      'Configured CloudFront for faster global content delivery',
+      'Restricted deployment permissions using least-privilege IAM policies',
+      'Automated deployment whenever approved code was pushed to the repository'
+    ],
+    tech: ['AWS', 'S3', 'CloudFront', 'IAM', 'GitHub Actions', 'CI/CD'],
+    outcomes: [
+      'Created a repeatable deployment process with fewer manual steps',
+      'Improved application delivery through CDN-based distribution',
+      'Reduced credential exposure through scoped IAM permissions'
+    ],
+    learnings: [
+      'Deployment automation should be treated as part of the application architecture',
+      'Cloud permissions should be scoped to the smallest practical set of actions',
+      'A simple CI/CD pipeline can significantly improve deployment reliability'
+    ]
   }
 ]
 
@@ -172,8 +263,9 @@ export default function ProjectsPage () {
                 Projects
               </h1>
               <p className='max-w-2xl text-zinc-700'>
-                A selection of projects highlighting product thinking, clean UI,
-                and reliable engineering.
+                Selected work across production SaaS, full-stack development, AI
+                infrastructure, cloud deployment, observability, and data
+                systems.
               </p>
             </div>
 
@@ -194,16 +286,23 @@ export default function ProjectsPage () {
           </header>
 
           {/* Quick nav */}
-          <nav className='mt-10 rounded-2xl border border-white/20 bg-white/30 p-5 shadow-sm backdrop-blur-md'>
+          <nav className='mt-10 rounded-2xl border border-white/20 bg-white/70 p-5 shadow-sm'>
             <p className='text-sm font-medium text-zinc-900'>Jump to</p>
+
             <div className='mt-3 flex flex-wrap gap-4 text-sm'>
-              {['homehudl', 'aisiem', 'iplanner'].map(id => (
+              {[
+                { id: 'homehudl', label: 'Homehudl' },
+                { id: 'aisiem', label: 'AI-SIEM' },
+                { id: 'iplanner', label: 'iPlanner' },
+                { id: 'let-sql-fly', label: 'Let SQL Fly' },
+                { id: 'aws-deployment', label: 'AWS Deployment' }
+              ].map(item => (
                 <a
-                  key={id}
-                  className='hover:underline transition-all'
-                  href={`#${id}`}
+                  key={item.id}
+                  className='transition-all hover:underline'
+                  href={`#${item.id}`}
                 >
-                  {id.charAt(0).toUpperCase() + id.slice(1)} →
+                  {item.label} →
                 </a>
               ))}
             </div>

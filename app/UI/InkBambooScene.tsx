@@ -374,8 +374,12 @@ export default function InkBambooScene ({
 
   return (
     <div
-      className='relative isolate min-h-screen w-full bg-[#f2efe6] cursor-pointer'
-      onPointerDown={handlePointerDown}
+      className={
+        backgroundOnly
+          ? 'relative isolate h-full min-h-[100dvh] w-full bg-[#f2efe6]'
+          : 'relative isolate h-[100dvh] w-full overflow-hidden bg-[#f2efe6] cursor-pointer'
+      }
+      onPointerDown={backgroundOnly ? undefined : handlePointerDown}
     >
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap');
@@ -418,11 +422,12 @@ export default function InkBambooScene ({
       )}
 
       {/* Three.js 只是固定背景。它不再包住网页内容。 */}
-      <div className='fixed inset-0 z-0 h-[100dvh] w-full overflow-hidden bg-[#f2efe6]'>
+      <div className='pointer-events-none absolute inset-0 z-0 h-full w-full overflow-hidden bg-[#f2efe6]'>
         <Canvas
           className={`h-full w-full bg-[#f2efe6] ${
             shouldPlayIntro ? 'fade-in' : ''
           }`}
+          style={{ pointerEvents: 'none' }}
           dpr={1}
           gl={{
             alpha: false,
@@ -523,25 +528,25 @@ export default function InkBambooScene ({
       </div>
 
       <div
-        className='pointer-events-none fixed inset-0 z-[1] opacity-[0.15] mix-blend-multiply'
+        className='pointer-events-none absolute inset-0 z-[1] opacity-[0.15] mix-blend-multiply'
         style={{
           backgroundImage: `url('https://www.transparenttextures.com/patterns/handmade-paper.png')`,
           filter: 'contrast(1.2)'
         }}
       />
 
-      {/* 正常网页 DOM：由浏览器布局，不受 Three.js camera / lookAt 影响。 */}
+      {/* 正常网页 DOM：内部滚动，避免被场景容器锁住 */}
       {!backgroundOnly && introDone && (
-        <div className='relative z-10 w-full fade-in'>
+        <div className='relative z-10 h-full w-full overflow-y-auto overscroll-contain fade-in'>
           <HomeContent variant='overlay' />
         </div>
       )}
 
-      <div className='pointer-events-none fixed right-6 bottom-8 z-20 font-calligraphy text-xl tracking-[0.6em] text-zinc-950 opacity-70 [writing-mode:vertical-rl] drop-shadow-sm sm:right-12 sm:bottom-12 sm:text-2xl sm:tracking-[0.8em]'>
+      <div className='pointer-events-none absolute right-6 bottom-8 z-20 font-calligraphy text-xl tracking-[0.6em] text-zinc-950 opacity-70 [writing-mode:vertical-rl] drop-shadow-sm sm:right-12 sm:bottom-12 sm:text-2xl sm:tracking-[0.8em]'>
         万竿烟雨
       </div>
 
-      <div className='pointer-events-none fixed left-6 bottom-8 z-20 font-calligraphy text-base tracking-[0.45em] text-zinc-950 opacity-70 [writing-mode:vertical-rl] drop-shadow-sm sm:left-12 sm:bottom-12 sm:text-xl sm:tracking-[0.6em]'>
+      <div className='pointer-events-none absolute left-6 bottom-8 z-20 font-calligraphy text-base tracking-[0.45em] text-zinc-950 opacity-70 [writing-mode:vertical-rl] drop-shadow-sm sm:left-12 sm:bottom-12 sm:text-xl sm:tracking-[0.6em]'>
         点击画面惊风雨{' '}
         <span className='font-sans text-[10px] uppercase tracking-normal opacity-50'>
           click

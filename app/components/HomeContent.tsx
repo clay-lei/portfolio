@@ -9,39 +9,64 @@ export default function HomeContent ({
 }) {
   const projects = [
     {
-      title: 'Homehudl Onboarding Chatbot',
-      subtitle: 'Next.js · TypeScript · Node.js',
+      title: 'Homehudl Real Estate SaaS Platform',
+      subtitle: 'Next.js · TypeScript · Node.js · REST APIs',
       description:
-        'Built a conversational onboarding flow to replace a static multi-page questionnaire, improving speed and data quality.',
+        'Refactored a production SaaS codebase, built multi-role onboarding workflows, and developed reliable data transformation and agent-matching services.',
       links: [{ label: 'Case Study', href: '/projects#homehudl' }]
     },
     {
-      title: 'AI-SIEM Conversational Assistant (Capstone)',
-      subtitle: 'RAG · Observability · Splunk · OpenTelemetry',
+      title: 'AI-SIEM Conversational Assistant',
+      subtitle: 'RAG · Docker · OCI · OpenTelemetry · Splunk',
       description:
-        'Prototype AI assistant for security operations with telemetry, dashboards, and VM-based containerized services.',
+        'Deployed a containerized RAG assistant and built observability pipelines for monitoring latency, system health, usage, and distributed service behavior.',
       links: [{ label: 'Case Study', href: '/projects#aisiem' }]
     },
     {
-      title: 'iPlanner Course Planner',
-      subtitle: 'Node.js · MongoDB · Auth',
+      title: 'iPlanner Course Planning Platform',
+      subtitle: 'Next.js · Node.js · MongoDB',
       description:
-        'Course planning web app with login, schedule management, and requirement checking.',
+        'Built a full-stack course planning platform with real-time filtering, schedule generation, REST APIs, and optimized MongoDB schemas.',
       links: [{ label: 'Case Study', href: '/projects#iplanner' }]
+    },
+    {
+      title: 'Let SQL Fly',
+      subtitle: 'PostgreSQL · SQL · ETL · Data Modeling',
+      description:
+        'Designed normalized relational schemas and analytical SQL workflows using joins, CTEs, window functions, and ETL pipelines.',
+      links: [{ label: 'Case Study', href: '/projects#let-sql-fly' }]
+    },
+    {
+      title: 'AWS Web Application Deployment',
+      subtitle: 'AWS S3 · CloudFront · IAM · GitHub Actions',
+      description:
+        'Deployed a production web application with least-privilege IAM policies and automated CI/CD through GitHub Actions.',
+      links: [{ label: 'Case Study', href: '/projects#aws-deployment' }]
     }
   ]
 
   const skills = [
-    'Next.js',
-    'React',
     'TypeScript',
     'JavaScript',
+    'Python',
+    'Java',
+    'SQL',
+    'React',
+    'Next.js',
     'Node.js',
-    'Tailwind CSS',
-    'MongoDB',
+    'Express.js',
     'REST APIs',
+    'MongoDB',
+    'PostgreSQL',
+    'ChromaDB',
+    'Docker',
+    'AWS',
+    'OCI',
+    'Azure',
     'OpenTelemetry',
-    'Splunk'
+    'Splunk',
+    'RAG',
+    'CI/CD'
   ]
 
   // ✅ 两种外观：solid=白底正常主页；overlay=竹林上玻璃层
@@ -80,7 +105,7 @@ export default function HomeContent ({
             }`}
           >
             <span className='h-2 w-2 rounded-full bg-emerald-500' />
-            Available for income · Seattle / Remote
+            Open to opportunities · Seattle / Remote
           </div>
 
           <h1
@@ -91,20 +116,78 @@ export default function HomeContent ({
             }`}
           >
             Hi, I’m{' '}
-            <span className='underline decoration-zinc-400/50 underline-offset-[12px] hover:decoration-emerald-400 transition-colors'>
-              Millor Lei
+            <span className='group relative inline'>
+              <span className='underline decoration-zinc-400/50 underline-offset-[12px] group-hover:decoration-emerald-400 transition-colors cursor-pointer'>
+                Millor Lei
+              </span>
+              .
+              <span
+                className={`ml-2 align-middle text-xs font-medium tracking-wide sm:text-sm ${
+                  variant === 'solid' ? 'text-zinc-400' : 'text-zinc-700/55'
+                }`}
+              >
+                hover me
+              </span>
+              {/* Sticky-note contact popover */}
+              <span
+                className='
+                  pointer-events-none absolute left-0 top-full z-30 mt-3 w-56
+                  origin-top-left scale-95 opacity-0
+                  transition-all duration-200 ease-out
+                  group-hover:pointer-events-auto group-hover:scale-100 group-hover:opacity-100
+                '
+              >
+                <span className='block rounded-[20px] border-2 border-zinc-900 p-[2px] shadow-[0_8px_20px_rgba(0,0,0,0.14)]'>
+                  <span
+                    className='relative block overflow-hidden rounded-[16px] border border-zinc-200 bg-[#f7f4ec] p-4'
+                    style={{
+                      backgroundImage: "url('/img/background_1.png')",
+                      backgroundSize: '100% 100%',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat'
+                    }}
+                  >
+                    <span className='absolute inset-0 bg-white/72' />
+                    <span className='relative z-10 flex flex-col gap-2.5 text-left text-sm font-medium text-zinc-800'>
+                      <a
+                        href='https://github.com/clay-lei'
+                        target='_blank'
+                        rel='noreferrer'
+                        className='hover:text-emerald-700 hover:underline'
+                      >
+                        GitHub →
+                      </a>
+                      <a
+                        href='https://www.linkedin.com/in/millor-lei-4a0870232'
+                        target='_blank'
+                        rel='noreferrer'
+                        className='hover:text-emerald-700 hover:underline'
+                      >
+                        LinkedIn →
+                      </a>
+                      <a
+                        href='mailto:haichenlei@gmail.com'
+                        className='hover:text-emerald-700 hover:underline'
+                      >
+                        Email →
+                      </a>
+                    </span>
+                  </span>
+                </span>
+              </span>
             </span>
-            .
             <br />
             <span className='opacity-90'>
-              I build product-focused web experiences.
+              I build reliable full-stack and AI-powered systems.
             </span>
           </h1>
 
-          <p className={`max-w-2xl text-lg leading-relaxed ${subtleText}`}>
-            Informatics UW Alumni with hands-on experience building full-stack
-            features in Python and Typescript. I care about clean UI, reliable
-            data flows, and measurable impact.
+          <p className={`max-w-3xl text-lg leading-relaxed ${subtleText}`}>
+            University of Washington Informatics graduate with experience
+            building production SaaS features, full-stack applications, RAG
+            systems, and cloud observability pipelines. I focus on reliable
+            APIs, scalable data flows, and software that delivers measurable
+            product impact.
           </p>
 
           <div className='flex flex-wrap gap-3'>
@@ -112,34 +195,12 @@ export default function HomeContent ({
               View Projects
             </Link>
 
-            <a href='/resume/HL_Resume.pdf' className={pillBtnGhost}>
+            <a href='/resume/HL_Resume_2026.pdf' className={pillBtnGhost}>
               Resume
             </a>
 
-            <a href='mailto:haichenlei@email.com' className={pillBtnGhost}>
-              Email
-            </a>
-
-            <a
-              href='https://github.com/clay-lei'
-              target='_blank'
-              rel='noreferrer'
-              className={pillBtnGhost}
-            >
-              GitHub
-            </a>
-
-            <a
-              href='https://www.linkedin.com/in/millor-lei-4a0870232'
-              target='_blank'
-              rel='noreferrer'
-              className={pillBtnGhost}
-            >
-              LinkedIn
-            </a>
-
-            <Link href='/ink' className={pillBtnGhost}>
-              Ink Scene
+            <Link href='/investments' className={pillBtnGhost}>
+              Investments
             </Link>
           </div>
         </header>
@@ -149,34 +210,39 @@ export default function HomeContent ({
           {[
             {
               label: 'Focus',
-              value: 'Frontend + Full-stack',
-              note: 'Next.js · APIs · UI/UX'
+              value: 'Full-stack + AI systems',
+              note: 'Next.js · Node.js · RAG'
             },
             {
               label: 'Strength',
-              value: 'Shipping fast',
-              note: 'Clean components + iteration'
+              value: 'Reliable data flows',
+              note: 'APIs · validation · observability'
             },
             {
-              label: 'Impact',
-              value: 'Measured results',
-              note: 'Speed, accuracy, clarity'
+              label: 'Experience',
+              value: 'Production engineering',
+              note: 'SaaS · cloud · distributed systems'
             }
           ].map(item => (
             <div
               key={item.label}
-              className='rounded-[24px] border-2 border-zinc-900 p-[2px] shadow-[0_10px_30px_rgba(0,0,0,0.18)]'
+              className='rounded-[24px] border-2 border-zinc-900 p-[2px] shadow-[0_8px_20px_rgba(0,0,0,0.14)]'
             >
               <div
                 className={`
-                                rounded-2xl border p-5
-                                ${border}
-                                bg-[url('/img/background_1.png')]
-                                bg-cover bg-center
-                                relative overflow-hidden
-                              `}
+          relative min-h-[116px] overflow-hidden
+          rounded-2xl border p-5
+          ${border}
+          bg-[#f7f4ec]
+        `}
+                style={{
+                  backgroundImage: "url('/img/background_1.png')",
+                  backgroundSize: '100% 100%',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat'
+                }}
               >
-                <div className='absolute inset-0 bg-white/70 backdrop-blur-[1px]' />
+                <div className='absolute inset-0 bg-white/72' />
 
                 <div className='relative z-10'>
                   <p className={`text-sm ${subtleText2}`}>{item.label}</p>
