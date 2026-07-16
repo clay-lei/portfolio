@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 
 type Investment = {
@@ -455,9 +456,20 @@ export default function InvestmentsPage () {
                 </span>
               </div>
 
-              <h1 className='mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.04em] sm:text-6xl'>
-                Portfolio cockpit
-              </h1>
+              <div className='mt-5 flex items-center gap-4 sm:gap-5'>
+                <Image
+                  src='/img/portfoliogone.png'
+                  alt='Portfoliogone logo'
+                  width={110}
+                  height={110}
+                  priority
+                  className='h-16 w-16 shrink-0 rounded-xl object-contain sm:h-24 sm:w-24'
+                />
+
+                <h1 className='max-w-3xl text-4xl font-semibold tracking-[-0.04em] sm:text-6xl'>
+                  Portfolio cockpit
+                </h1>
+              </div>
 
               <p className='mt-5 max-w-2xl text-base leading-7 text-zinc-300 sm:text-lg'>
                 A private dashboard for position tracking, concentration risk,
